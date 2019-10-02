@@ -32,7 +32,11 @@ func run() {
 		"built_at": date,
 	}).Debug("Starting seed")
 
-	apiHandler := api.NewAPIHandler()
+	apiHandler := api.NewAPIHandler(api.BuildInfo{
+		Version: version,
+		Commit:  commit,
+		Date:    date,
+	})
 
 	server := http.Server{
 		Handler:      apiHandler,
