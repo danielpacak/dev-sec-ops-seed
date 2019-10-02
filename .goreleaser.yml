@@ -1,0 +1,34 @@
+env:
+  - GO111MODULE=on
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - id: seed
+    main: ./cmd/seed/main.go
+    env:
+      - CGO_ENABLED=0
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      386: i386
+      amd64: x86_64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+dockers:
+  - image_templates:
+      - "docker.io/danielpacak/dev-sec-ops-seed"
+    build_flag_templates:
+      - "--label=org.label-schema.schema-version=1.0"
+      - "--label=org.label-schema.version={{ .Version }}"
+      - "--label=org.label-schema.name={{ .ProjectName }}"

@@ -10,6 +10,12 @@ import (
 	"time"
 )
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 func main() {
 	run()
 }
@@ -19,6 +25,12 @@ func run() {
 	log.SetLevel(log.DebugLevel)
 	log.SetReportCaller(false)
 	log.SetFormatter(&log.JSONFormatter{})
+
+	log.WithFields(log.Fields{
+		"version":  version,
+		"commit":   commit,
+		"built_at": date,
+	}).Debug("Starting seed")
 
 	apiHandler := api.NewAPIHandler()
 
@@ -34,7 +46,7 @@ func run() {
 		sigint := make(chan os.Signal, 1)
 		signal.Notify(sigint, os.Interrupt, os.Kill)
 		captured := <-sigint
-		log.Debugf("Trapped os signal %v", captured)
+		log.WithField("signal", captured.String()).Debug("Trapped os signal")
 
 		log.Debug("Graceful shutdown started")
 		if err := server.Shutdown(context.Background()); err != nil {
