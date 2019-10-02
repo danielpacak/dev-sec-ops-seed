@@ -16,9 +16,9 @@ jobs:
         run: make
       - name: Build the Docker image
         run: docker build --tag docker.pkg.github.com/danielpacak/dev-sec-ops-seed/seed:${{ github.sha }} .
+      - name: Scan the Docker image with Trivy
+        run: docker run --rm -e TRIVY_USERNAME=danielpacak -e TRIVY_PASSWORD=${{ secrets.GITHUB_PACKAGE_TOKEN }} aquasec/trivy:0.1.6 docker.pkg.github.com/danielpacak/dev-sec-ops-seed/seed:${{ github.sha }}
       - name: Publish the Docker image
         run: |
           echo ${{ secrets.GITHUB_PACKAGE_TOKEN }} | docker login -u danielpacak --password-stdin docker.pkg.github.com
           docker push docker.pkg.github.com/danielpacak/dev-sec-ops-seed/seed:${{ github.sha }}
-      - name: Scan the Docker image with Trivy
-        run: docker run --rm -e TRIVY_USERNAME=danielpacak -e TRIVY_PASSWORD=${{ secrets.GITHUB_PACKAGE_TOKEN }} aquasec/trivy docker.pkg.github.com/danielpacak/dev-sec-ops-seed/seed:${{ github.sha }}
