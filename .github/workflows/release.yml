@@ -1,5 +1,8 @@
 name: build
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - "*"
 jobs:
   build:
     name: Build
@@ -13,5 +16,5 @@ jobs:
         uses: actions/checkout@v1
       - name: Build
         run: make
-      - name: Release snapshot
-        run: curl -sL https://git.io/goreleaser | bash -s -- --snapshot --skip-publish --rm-dist
+      - name: Release
+        run: curl -sL https://git.io/goreleaser | bash -s -- --rm-dist
