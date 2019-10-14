@@ -27,8 +27,10 @@ changelog:
       - '^chore:'
 dockers:
   - image_templates:
-      - "docker.io/danielpacak/dev-sec-ops-seed:{{ .Tag }}"
+      - "docker.pkg.github.com/danielpacak/dev-sec-ops-seed/seed:{{ .Version }}"
     build_flag_templates:
       - "--label=org.label-schema.schema-version=1.0"
       - "--label=org.label-schema.version={{ .Version }}"
       - "--label=org.label-schema.name={{ .ProjectName }}"
+      - "--label=org.label-schema.vcs=https://github.com/danielpacak/dev-sec-ops-seed"
+      - "--label=org.label-schema.vcs-ref={{ .FullCommit }}"
