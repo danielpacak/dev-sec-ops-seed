@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
+	"github.com/danielpacak/dev-sec-ops-seed/pkg/etc"
 	"github.com/danielpacak/dev-sec-ops-seed/pkg/http/api"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 	"os/signal"
-	"time"
 )
 
 var (
@@ -17,10 +17,12 @@ var (
 )
 
 func main() {
-	run()
+	if err := run(); err != nil {
+		log.Fatalf("Error: %v", err)
+	}
 }
 
-func run() {
+func run() (err error) {
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)
 	log.SetReportCaller(false)
@@ -38,11 +40,16 @@ func run() {
 		Date:    date,
 	})
 
+	apiConfig, err := etc.GetAPIConfig()
+	if err != nil {
+		return
+	}
+
 	server := http.Server{
 		Handler:      apiHandler,
-		Addr:         ":8080",
-		ReadTimeout:  15 * time.Second,
-		WriteTimeout: 15 * time.Second,
+		Addr:         apiConfig.Addr,
+		ReadTimeout:  apiConfig.ReadTimeout,
+		WriteTimeout: apiConfig.WriteTimeout,
 	}
 
 	shutdownComplete := make(chan struct{})
@@ -67,4 +74,5 @@ func run() {
 		log.Debug("ListenAndServe returned")
 	}()
 	<-shutdownComplete
+	return
 }
