@@ -1,5 +1,5 @@
 FROM alpine:3
 
-COPY dev-sec-ops-seed /seed
+COPY seed /seed
 
 ENTRYPOINT ["/seed"]

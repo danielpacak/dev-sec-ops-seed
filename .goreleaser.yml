@@ -6,6 +6,7 @@ before:
 builds:
   - id: seed
     main: ./cmd/seed/main.go
+    binary: seed
     env:
       - CGO_ENABLED=0
 archives:
@@ -17,7 +18,7 @@ archives:
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  name_template: "{{ .FullCommit }}"
 changelog:
   sort: asc
   filters:
@@ -28,6 +29,8 @@ changelog:
 dockers:
   - image_templates:
       - "docker.pkg.github.com/danielpacak/dev-sec-ops-seed/seed:{{ .Version }}"
+    binaries:
+      - seed
     build_flag_templates:
       - "--label=org.label-schema.schema-version=1.0"
       - "--label=org.label-schema.version={{ .Version }}"
