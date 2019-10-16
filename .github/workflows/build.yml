@@ -25,7 +25,7 @@ jobs:
         with:
           args: release --snapshot --skip-publish --rm-dist
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_PACKAGE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Scan image for vulnerabilities
         uses: docker://docker.io/aquasec/trivy:0.1.6
         with:
