@@ -11,8 +11,6 @@ jobs:
           go-version: 1.13
       - name: Checkout code
         uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
       - name: Run unit tests
         run: make test
       - name: Upload code coverage
@@ -27,6 +25,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_REGISTRY_TOKEN }}
       - name: Scan image for vulnerabilities
-        uses: docker://docker.io/aquasec/trivy:0.1.6
+        uses: docker://docker.io/aquasec/trivy:0.1.7
         with:
           args: --cache-dir /var/lib/trivy --exit-code 1 --no-progress docker.pkg.github.com/danielpacak/dev-sec-ops-seed/seed:${{ github.sha }}
