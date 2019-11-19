@@ -26,6 +26,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_REGISTRY_TOKEN }}
       - name: Scan image for vulnerabilities
-        uses: docker://docker.io/aquasec/trivy:0.1.7
+        uses: docker://docker.io/aquasec/trivy:0.2.1
         with:
           args: --cache-dir /var/lib/trivy docker.pkg.github.com/danielpacak/dev-sec-ops-seed/seed:${{ github.ref }}

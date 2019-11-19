@@ -23,6 +23,6 @@ jobs:
         with:
           args: release --snapshot --skip-publish --rm-dist
       - name: Scan image for vulnerabilities
-        uses: docker://docker.io/aquasec/trivy:0.1.7
+        uses: docker://docker.io/aquasec/trivy:0.2.1
         with:
           args: --cache-dir /var/lib/trivy --exit-code 1 --no-progress docker.pkg.github.com/danielpacak/dev-sec-ops-seed/seed:${{ github.sha }}
